@@ -1,0 +1,25 @@
+CreateSecurityGroup:
+aws ec2 create-security-group --group-name "my web security" --description "launch-wizard-2 created 2025-07-24T07:48:52.599Z" --vpc-id "vpc-024bd523251e43e0e"
+ 
+AuthorizeSecurityGroupIngress:
+aws ec2 authorize-security-group-ingress --group-id "sg-preview-1" --ip-permissions '{"IpProtocol":"tcp","FromPort":22,"ToPort":22,"IpRanges":[{"CidrIp":"0.0.0.0/0"}]}' '{"IpProtocol":"tcp","FromPort":80,"ToPort":80,"IpRanges":[{"CidrIp":"0.0.0.0/0"}]}' 
+
+RunInstances:
+aws ec2 run-instances --image-id "ami-0437df53acb2bbbfd" --instance-type "t3.micro" --key-name "webserver key" --network-interfaces '{"AssociatePublicIpAddress":true,"DeviceIndex":0,"Groups":["sg-preview-1"]}' --credit-specification '{"CpuCredits":"unlimited"}' --tag-specifications '{"ResourceType":"instance","Tags":[{"Key":"Name","Value":"My Web"}]}' --metadata-options '{"HttpEndpoint":"enabled","HttpPutResponseHopLimit":2,"HttpTokens":"required"}' --private-dns-name-options '{"HostnameType":"ip-name","EnableResourceNameDnsARecord":true,"EnableResourceNameDnsAAAARecord":false}' --count "1" 
+
+access Linux:
+step-1
+putty.gen ---> load [downloaded key]  ---> save as private
+step-2
+putty ---> session[add public ip] ---> ssh ---> auth ---> Brows private key file from putty.gen ---> open
+stem-3
+acces ssh write command
+"ec2 user" [login]
+"sudo su"  [allow user]
+"yum install httpd -y"  [install APACHE]
+"cd /var/www/html/"  [go to html directry]
+"vi index.html"   [create web page]
+"service httpd start" [start service]
+
+copy public ip and search on window to access website.
+
